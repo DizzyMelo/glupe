@@ -15,15 +15,21 @@ class _InicioState extends State<Inicio> {
     return Scaffold(
         backgroundColor: Cores.cristaBranca,
         body: SafeArea(
-          child: Column(
+          
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+            child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Inicie seu pedido',
+                'Olá, Daniel',
                 style: TextStyle(
                     color: Cores.noiteAzul,
                     fontSize: 24.0,
                     fontFamily: 'MonMedium'),
               ),
+
+
               SizedBox(height: 40.0),
 
               Container(
@@ -73,6 +79,7 @@ class _InicioState extends State<Inicio> {
               )
             ],
           ),
+          )
         ));
   }
 }

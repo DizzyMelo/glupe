@@ -70,7 +70,7 @@ flutter:
         
     - family: MonBlack
       fonts:
-        - asset: assets/fonts/mon/bold.ttf
+        - asset: assets/fonts/mon/black.ttf
 
   #
   # For details regarding fonts from package dependencies,
