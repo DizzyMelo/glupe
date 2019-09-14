@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:glupe/classes/distribuidor.dart';
 import 'package:glupe/cores/index.dart';
-import 'package:glupe/telas/distribuidor/index.dart';
 import 'package:glupe/utils/urls.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
+import '../distribuidor/index.dart' as telaDistribuidor;
 
 class Inicio extends StatefulWidget {
   @override
@@ -12,22 +15,29 @@ class Inicio extends StatefulWidget {
 }
 
 class _InicioState extends State<Inicio> {
+  List<Distribuidor> listaDistribuidores = new List();
+  double rating = 4.0;
 
-    buscarDistribuidores() async {
-    List<Distribuidor> tempListaRegistros = new List();
+  buscarDistribuidores() async {
+    List<Distribuidor> tempListaDistribuidores = new List();
     var res = await http.get(Uri.parse("${Urls.urlBase}distribuidores.php"),
         headers: {"Accept": "application/json"});
 
     var objetos = json.decode(res.body);
 
-    print(objetos);
+    for (var item in objetos['distribuidores']) {
+      tempListaDistribuidores
+          .add(new Distribuidor(
+            id: int.parse(item['id']), 
+            nome: item['nome'], 
+            imagem: item['imagem']));
+    }
 
     setState(() {
-      
+      listaDistribuidores = tempListaDistribuidores;
     });
   }
 
-  
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -37,26 +47,30 @@ class _InicioState extends State<Inicio> {
         backgroundColor: Cores.cristaBranca,
         body: SafeArea(
             child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'Olá, Daniel',
-                style: TextStyle(
-                    color: Cores.noiteAzul,
-                    fontSize: 24.0,
-                    fontFamily: 'MonMedium'),
-              ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    'GRÁTIS',
-                    style: TextStyle(
-                        color: Cores.noiteAzul,
-                        fontSize: 24.0,
-                        fontFamily: 'MonMedium'),
+                  Container(
+                    height: 80.0,
+                    width: 70.0,
+                    decoration: BoxDecoration(
+                        color: Cores.ceuAzulClaro,
+                        borderRadius: BorderRadius.circular(5.0),
+                        boxShadow: [
+                          new BoxShadow(
+                            color: Cores.noiteAzul,
+                            offset: new Offset(0.0, 10.0),
+                            blurRadius: 10.0,
+                          )
+                        ],
+                        image: DecorationImage(
+                            image:
+                                NetworkImage('${Urls.imgUsuario}linkedin.jpeg'),
+                            fit: BoxFit.cover)),
                   ),
                   CircularPercentIndicator(
                     radius: 60.0,
@@ -67,37 +81,45 @@ class _InicioState extends State<Inicio> {
                   )
                 ],
               ),
-              SizedBox(height: 40.0),
+              SizedBox(height: 50.0),
+              Text(
+                'Escolha um distribuidor',
+                style: TextStyle(
+                    fontFamily: 'AvenirBold',
+                    color: Cores.noiteAzul,
+                    fontSize: 22.0),
+              ),
               Container(
                 padding: EdgeInsets.only(top: 10.0),
                 height: 270.0,
                 width: double.infinity,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 5,
+                  itemCount: listaDistribuidores.length,
                   itemBuilder: (BuildContext context, int index) {
+                    Distribuidor distribuidor = listaDistribuidores[index];
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    Distribuidor()));
+                                    telaDistribuidor.DistribuidorPage(
+                                        distribuidor)));
                       },
                       child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 15.0, vertical: 45.0),
+                          padding: EdgeInsets.only(right: 20.0, top: 45.0),
                           child: Stack(
                             overflow: Overflow.visible,
                             children: <Widget>[
                               Container(
                                 padding: EdgeInsets.all(10.0),
-                                height: 140.0,
-                                width: 160.0,
+                                height: 200.0,
+                                width: 250.0,
                                 decoration: BoxDecoration(
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Cores.ceuAzulClaro,
+                                        color: Cores.noiteAzul,
                                         blurRadius:
                                             10.0, // has the effect of softening the shadow
                                         //spreadRadius: 5.0, // has the effect of extending the shadow
@@ -107,23 +129,94 @@ class _InicioState extends State<Inicio> {
                                         ),
                                       )
                                     ],
-                                    color: Cores.ceuAzulProfundo,
+                                    color: Cores.noiteAzul,
                                     borderRadius: BorderRadius.circular(5.0)),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      height: 0.0,
+                                    ),
+                                    Text(
+                                      '${distribuidor.nome}',
+                                      style: TextStyle(
+                                          color: Cores.cristaBranca,
+                                          fontSize: 17.0,
+                                          fontFamily: 'AvenirBold'),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Container(
+                                          width: 180.0,
+                                          child: LinearPercentIndicator(
+                                            percent: 0.5,
+                                            progressColor:
+                                                Cores.ceuAzulProfundo,
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 50.0,
+                                          child: Text(
+                                            'GRÁTIS',
+                                            style: TextStyle(
+                                                color: Cores.cristaBranca,
+                                                fontSize: 12.0,
+                                                fontFamily: 'AvenirBold'),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 0.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        SmoothStarRating(
+                                            allowHalfRating: false,
+                                            onRatingChanged: (v) {
+                                              rating = v;
+                                              setState(() {});
+                                            },
+                                            starCount: 5,
+                                            rating: rating,
+                                            size: 15.0,
+                                            color: Colors.yellow,
+                                            borderColor: Colors.yellow,
+                                            spacing: 0.0),
+                                        Text(
+                                          '1,2 km',
+                                          style: TextStyle(
+                                              color: Cores.cristaBranca,
+                                              fontFamily: 'AvenirRegular'),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                               Positioned(
-                                top: -40.0,
-                                left: 40.0,
-                                child: Container(
-                                  width: 80.0,
-                                  height: 80.0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.orange,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: Cores.cristaBranca, width: 3.0),
-                                  ),
-                                ),
-                              )
+                                  top: -40.0,
+                                  left: 85.0,
+                                  child: Hero(
+                                    tag: 'distribuidor',
+                                    child: Container(
+                                      width: 80.0,
+                                      height: 80.0,
+                                      decoration: BoxDecoration(
+                                          color: Colors.orange,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color: Cores.cristaBranca,
+                                              width: 3.0),
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  '${Urls.imgDistribuidor}${distribuidor.imagem}'),
+                                              fit: BoxFit.cover)),
+                                    ),
+                                  ))
                             ],
                           )),
                     );
