@@ -16,25 +16,37 @@ class Inicio extends StatefulWidget {
 
 class _InicioState extends State<Inicio> {
   List<Distribuidor> listaDistribuidores = new List();
+  List<Distribuidor> listaDistribuidoresUsados = new List();
   double rating = 4.0;
 
   buscarDistribuidores() async {
     List<Distribuidor> tempListaDistribuidores = new List();
-    var res = await http.get(Uri.parse("${Urls.urlBase}distribuidores.php"),
+    List<Distribuidor> tempListaDistribuidoresUsados = new List();
+
+
+    var res = await http.get(
+        Uri.parse("${Urls.urlBase}distribuidores.php?usuario=1"),
         headers: {"Accept": "application/json"});
 
     var objetos = json.decode(res.body);
 
-    for (var item in objetos['distribuidores']) {
-      tempListaDistribuidores
-          .add(new Distribuidor(
-            id: int.parse(item['id']), 
-            nome: item['nome'], 
-            imagem: item['imagem']));
+    for (var item in objetos['registros'][0]['distribuidores']) {
+      tempListaDistribuidores.add(new Distribuidor(
+          id: int.parse(item['id']),
+          nome: item['nome'],
+          imagem: item['imagem']));
+    }
+
+    for (var item in objetos['registros'][0]['distribuidoresUsados']) {
+      tempListaDistribuidoresUsados.add(new Distribuidor(
+          id: int.parse(item['id']),
+          nome: item['nome'],
+          imagem: item['imagem']));
     }
 
     setState(() {
       listaDistribuidores = tempListaDistribuidores;
+      listaDistribuidoresUsados = tempListaDistribuidoresUsados;
     });
   }
 
@@ -46,7 +58,8 @@ class _InicioState extends State<Inicio> {
     return Scaffold(
         backgroundColor: Cores.cristaBranca,
         body: SafeArea(
-            child: Padding(
+            child: SingleChildScrollView(
+              child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +96,7 @@ class _InicioState extends State<Inicio> {
               ),
               SizedBox(height: 50.0),
               Text(
-                'Escolha um distribuidor',
+                'Distribuidoras que você já usou',
                 style: TextStyle(
                     fontFamily: 'AvenirBold',
                     color: Cores.noiteAzul,
@@ -95,9 +108,9 @@ class _InicioState extends State<Inicio> {
                 width: double.infinity,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: listaDistribuidores.length,
+                  itemCount: listaDistribuidoresUsados.length,
                   itemBuilder: (BuildContext context, int index) {
-                    Distribuidor distribuidor = listaDistribuidores[index];
+                    Distribuidor distribuidor = listaDistribuidoresUsados[index];
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -201,7 +214,7 @@ class _InicioState extends State<Inicio> {
                                   top: -40.0,
                                   left: 85.0,
                                   child: Hero(
-                                    tag: 'distribuidor',
+                                    tag: 'distribuidorUsado',
                                     child: Container(
                                       width: 80.0,
                                       height: 80.0,
@@ -222,10 +235,134 @@ class _InicioState extends State<Inicio> {
                     );
                   },
                 ),
-              )
+              ),
+              SizedBox(height: 50.0),
+              Text(
+                'Escolha um distribuidor',
+                style: TextStyle(
+                    fontFamily: 'AvenirBold',
+                    color: Cores.noiteAzul,
+                    fontSize: 22.0),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10.0),
+                height: 270.0,
+                width: double.infinity,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: listaDistribuidores.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Distribuidor distribuidor = listaDistribuidores[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    telaDistribuidor.DistribuidorPage(
+                                        distribuidor)));
+                      },
+                      child: Padding(
+                          padding: EdgeInsets.only(right: 20.0, top: 45.0),
+                          child: Stack(
+                            overflow: Overflow.visible,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.all(10.0),
+                                height: 150.0,
+                                width: 250.0,
+                                decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Cores.noiteAzul,
+                                        blurRadius:
+                                            10.0, // has the effect of softening the shadow
+                                        //spreadRadius: 5.0, // has the effect of extending the shadow
+                                        offset: Offset(
+                                          0.0, // horizontal, move right 10
+                                          10.0, // vertical, move down 10
+                                        ),
+                                      )
+                                    ],
+                                    color: Cores.noiteAzul,
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      height: 0.0,
+                                    ),
+                                    Text(
+                                      '${distribuidor.nome}',
+                                      style: TextStyle(
+                                          color: Cores.cristaBranca,
+                                          fontSize: 17.0,
+                                          fontFamily: 'AvenirBold'),
+                                    ),
+                                    
+                                    SizedBox(
+                                      height: 0.0,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        SmoothStarRating(
+                                            allowHalfRating: false,
+                                            onRatingChanged: (v) {
+                                              rating = v;
+                                              setState(() {});
+                                            },
+                                            starCount: 5,
+                                            rating: rating,
+                                            size: 15.0,
+                                            color: Colors.yellow,
+                                            borderColor: Colors.yellow,
+                                            spacing: 0.0),
+                                        Text(
+                                          '1,2 km',
+                                          style: TextStyle(
+                                              color: Cores.cristaBranca,
+                                              fontFamily: 'AvenirRegular'),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                  top: -40.0,
+                                  left: 85.0,
+                                  child: Hero(
+                                    tag: 'distribuidor${distribuidor.id}',
+                                    child: Container(
+                                      width: 80.0,
+                                      height: 80.0,
+                                      decoration: BoxDecoration(
+                                          color: Colors.orange,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color: Cores.cristaBranca,
+                                              width: 3.0),
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  '${Urls.imgDistribuidor}${distribuidor.imagem}'),
+                                              fit: BoxFit.cover)),
+                                    ),
+                                  ))
+                            ],
+                          )),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
-        )));
+        ),
+            )
+        )
+        );
   }
 
   @override
