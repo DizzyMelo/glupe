@@ -17,7 +17,7 @@ class Inicio extends StatefulWidget {
 class _InicioState extends State<Inicio> {
   List<Distribuidor> listaDistribuidores = new List();
   List<Distribuidor> listaDistribuidoresUsados = new List();
-  double rating = 4.0;
+  
 
   buscarDistribuidores() async {
     List<Distribuidor> tempListaDistribuidores = new List();
@@ -34,14 +34,21 @@ class _InicioState extends State<Inicio> {
       tempListaDistribuidores.add(new Distribuidor(
           id: int.parse(item['id']),
           nome: item['nome'],
-          imagem: item['imagem']));
+          imagem: item['imagem'],
+          gratis: int.parse(item['gratis']),
+          rating: double.parse(item['rating'])
+          ));
     }
 
     for (var item in objetos['registros'][0]['distribuidoresUsados']) {
       tempListaDistribuidoresUsados.add(new Distribuidor(
           id: int.parse(item['id']),
           nome: item['nome'],
-          imagem: item['imagem']));
+          imagem: item['imagem'],
+          contador: int.parse(item['contador']),
+          gratis: int.parse(item['gratis']),
+          rating: double.parse(item['rating'])
+          ));
     }
 
     setState(() {
@@ -111,6 +118,10 @@ class _InicioState extends State<Inicio> {
                   itemCount: listaDistribuidoresUsados.length,
                   itemBuilder: (BuildContext context, int index) {
                     Distribuidor distribuidor = listaDistribuidoresUsados[index];
+
+                    double percent = distribuidor.contador / distribuidor.gratis;
+
+                    print(percent);
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -163,7 +174,7 @@ class _InicioState extends State<Inicio> {
                                         Container(
                                           width: 180.0,
                                           child: LinearPercentIndicator(
-                                            percent: 0.5,
+                                            percent: percent,
                                             progressColor:
                                                 Cores.ceuAzulProfundo,
                                           ),
@@ -189,12 +200,8 @@ class _InicioState extends State<Inicio> {
                                       children: <Widget>[
                                         SmoothStarRating(
                                             allowHalfRating: false,
-                                            onRatingChanged: (v) {
-                                              rating = v;
-                                              setState(() {});
-                                            },
                                             starCount: 5,
-                                            rating: rating,
+                                            rating: distribuidor.rating,
                                             size: 15.0,
                                             color: Colors.yellow,
                                             borderColor: Colors.yellow,
@@ -214,7 +221,7 @@ class _InicioState extends State<Inicio> {
                                   top: -40.0,
                                   left: 85.0,
                                   child: Hero(
-                                    tag: 'distribuidorUsado',
+                                    tag: 'distribuidorUsado${distribuidor.id}',
                                     child: Container(
                                       width: 80.0,
                                       height: 80.0,
@@ -310,12 +317,8 @@ class _InicioState extends State<Inicio> {
                                       children: <Widget>[
                                         SmoothStarRating(
                                             allowHalfRating: false,
-                                            onRatingChanged: (v) {
-                                              rating = v;
-                                              setState(() {});
-                                            },
                                             starCount: 5,
-                                            rating: rating,
+                                            rating: distribuidor.rating,
                                             size: 15.0,
                                             color: Colors.yellow,
                                             borderColor: Colors.yellow,

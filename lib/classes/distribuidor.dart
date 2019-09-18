@@ -1,6 +1,6 @@
 class Distribuidor{
-  int id;
+  int id, gratis, contador;
   String nome, imagem;
-
-  Distribuidor({this.id, this.nome, this.imagem});
+  double rating;
+  Distribuidor({this.id, this.nome, this.imagem, this.gratis, this.rating, this.contador});
 }

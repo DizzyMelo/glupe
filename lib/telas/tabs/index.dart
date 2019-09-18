@@ -8,6 +8,10 @@ class Tabs extends StatefulWidget {
   _TabsState createState() => _TabsState();
 }
 
+
+SELECT DISTINCT pedido.usuario, distribuidor.nome, distribuidor.imagem, (SELECT COUNT(id) FROM pedido WHERE pedido.usuario = 1) AS contador FROM pedido JOIN distribuidor ON (pedido.distribuidor = distribuidor.id) WHERE pedido.usuario = 1
+
+
 class _TabsState extends State<Tabs> {
 
   int currentIndex = 0;
