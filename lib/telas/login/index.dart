@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:glupe/classes/usuario.dart';
 import 'package:glupe/cores/index.dart';
+import 'package:glupe/telas/inicio/index.dart';
+import 'package:glupe/utils/urls.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   @override
@@ -7,6 +12,46 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController senhaController = new TextEditingController();
+
+  login() async {
+
+    var res = await http.post(
+        Uri.parse(
+            "${Urls.urlBase}login.php"),
+        headers: {"Accept": "application/json"},
+        body: {
+          "email": emailController.text,
+          "senha": senhaController.text 
+        });
+
+    var obj = json.decode(res.body);
+
+    try{
+      Usuario usuario = new Usuario(
+        id: int.parse(obj["0"]),
+        nome: obj['nome'],
+        imagem: obj['imagem'],
+        email: obj['email'],
+        celular: obj['celular'],
+        status: int.parse(obj['sts'])
+      );
+
+      Usuario.superUsuario = usuario;
+      Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    Inicio()));
+
+    }catch (e) {
+      print(e);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -14,6 +59,7 @@ class _LoginState extends State<Login> {
 
     return Scaffold(
       backgroundColor: Cores.cristaBranca,
+      resizeToAvoidBottomPadding: false,
       body: Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -48,7 +94,10 @@ class _LoginState extends State<Login> {
                             height: 50.0,
                             child: TextField(
                               keyboardType: TextInputType.emailAddress,
-                              
+                              controller: emailController,
+                              onSubmitted: (txt){
+                                this.login();
+                              },
                               decoration: new InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -70,8 +119,11 @@ class _LoginState extends State<Login> {
                           Container(
                             height: 50.0,
                             child: TextField(
-                              keyboardType: TextInputType.emailAddress,
-                              
+                              controller: senhaController,
+                              obscureText: true,
+                              onSubmitted: (txt){
+                                this.login();
+                              },
                               decoration: new InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -102,7 +154,7 @@ class _LoginState extends State<Login> {
 
                       GestureDetector(
                         onTap: (){
-
+                          this.login();
                         },
                         child: Container(
                           decoration: BoxDecoration(

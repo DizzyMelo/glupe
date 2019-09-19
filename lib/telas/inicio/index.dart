@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glupe/classes/distribuidor.dart';
+import 'package:glupe/classes/usuario.dart';
 import 'package:glupe/cores/index.dart';
 import 'package:glupe/utils/urls.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -25,7 +26,7 @@ class _InicioState extends State<Inicio> {
 
 
     var res = await http.get(
-        Uri.parse("${Urls.urlBase}distribuidores.php?usuario=1"),
+        Uri.parse("${Urls.urlBase}distribuidores.php?usuario=${Usuario.superUsuario.id}"),
         headers: {"Accept": "application/json"});
 
     var objetos = json.decode(res.body);
