@@ -26,9 +26,13 @@ dependencies:
   percent_indicator: ^2.1.1+1
   http: ^0.12.0+2
   smooth_star_rating: ^1.0.3
-  rich_alert: ^0.1.32
+  flash: ^1.1.0+2
   rounded_modal: ^1.0.1
   bottom_navy_bar: ^5.2.0
+  beauty_textfield: ^0.0.1
+  simple_animations: ^1.3.3
+  shared_preferences: ^0.5.3+4
+  equinox: ^0.3.3
 
 dev_dependencies:
   flutter_test:

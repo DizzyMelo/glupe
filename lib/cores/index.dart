@@ -5,4 +5,5 @@ class Cores{
   static Color cristaBranca = Color.fromRGBO(248, 247, 239, 1.0);
   static Color melancia = Color.fromRGBO(249, 82, 122, 1.0);
   static Color noiteAzul = Color.fromRGBO(50, 56, 70, 1.0);
+  static Color cinza = Color.fromRGBO(166, 166, 166, 1.0);
 }

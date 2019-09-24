@@ -5,7 +5,6 @@ import 'package:glupe/cores/index.dart';
 import 'package:glupe/utils/urls.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:rich_alert/rich_alert.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:rounded_modal/rounded_modal.dart';
 

@@ -5,6 +5,7 @@ import 'package:glupe/telas/inicio/index.dart';
 import 'package:glupe/utils/urls.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _LoginState extends State<Login> {
   TextEditingController senhaController = new TextEditingController();
 
   login() async {
+    final prefs = await SharedPreferences.getInstance();
 
     var res = await http.post(
         Uri.parse(
@@ -40,11 +42,20 @@ class _LoginState extends State<Login> {
       );
 
       Usuario.superUsuario = usuario;
+      
+      prefs.setInt("id", int.parse(obj["0"]));
+      prefs.setString("nome", obj['nome']);
+      prefs.setString("imagem", obj['imagem']);
+      prefs.setString("email", obj['email']);
+      prefs.setString("celular", obj['celular']);
+
       Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     Inicio()));
+
+                                
 
     }catch (e) {
       print(e);
