@@ -121,17 +121,28 @@ class _CadastroState extends State<Cadastro> {
               ),
               carregando
                   ? CarregandoWidget()
-                  : Center(
-                      child: EqButton(
-                        appearance: EqWidgetAppearance.filled,
-                        onTap: () {
-                          this.cadastrar();
-                          
-                        },
-                        label: Text('Cadastrar'),
-                        size: EqWidgetSize.large,
-                        status: EqWidgetStatus.success,
-                      ),
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        
+                        FlatButton(
+                          child: Text("Voltar", style: TextStyle(color: Cores.cristaBranca, fontSize: 18.0, fontWeight: FontWeight.bold)),
+                          onPressed: (){
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        
+                        EqButton(
+                          appearance: EqWidgetAppearance.filled,
+                          onTap: () {
+                            this.cadastrar();
+                            
+                          },
+                          label: Text('Cadastrar'),
+                          size: EqWidgetSize.large,
+                          status: EqWidgetStatus.success,
+                        ),
+                      ],
                     )
             ],
           ),

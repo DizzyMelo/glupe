@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glupe/classes/usuario.dart';
 import 'package:glupe/cores/index.dart';
+import 'package:glupe/navegacao/index.dart';
 import 'package:glupe/telas/inicio/index.dart';
 import 'package:glupe/utils/urls.dart';
 import 'dart:convert';
@@ -30,6 +31,8 @@ class _LoginState extends State<Login> {
         });
 
     var obj = json.decode(res.body);
+
+    print(obj);
 
     try{
       Usuario usuario = new Usuario(
@@ -157,7 +160,7 @@ class _LoginState extends State<Login> {
                           FlatButton(
                             child: Text('Crie sua conta', style: TextStyle(color: Colors.white, fontSize: 16.0, fontFamily: 'MonMedium' ),),
                             onPressed: (){
-                              print("criar conta");
+                              Navegacao.navegarParaCadstro(context);
                             },
                           ),
                           Text('Esqueceu sua senha?', style: TextStyle(color: Colors.white),),

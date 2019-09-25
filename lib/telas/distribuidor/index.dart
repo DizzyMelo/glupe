@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:glupe/classes/distribuidor.dart';
 import 'package:glupe/classes/produto.dart';
+import 'package:glupe/classes/usuario.dart';
+import 'package:glupe/constantes/index.dart';
 import 'package:glupe/cores/index.dart';
 import 'package:glupe/utils/urls.dart';
 import 'dart:convert';
@@ -20,6 +22,52 @@ class DistribuidorPage extends StatefulWidget {
 class _DistribuidorPageState extends State<DistribuidorPage> {
   List<Produto> listaProdutos = new List();
   double rating = 4.0;
+
+  iniciarPedido(int distribuidor) async {
+    var res = await http.post(
+        Uri.parse("${Urls.urlBase}iniciarPedido.php"),
+        body: {
+          "distribuidor": distribuidor,
+          "usuario": Usuario.superUsuario.id
+        },
+        headers: {"Accept": "application/json"});
+
+    var obj = json.decode(res.body);
+    print(obj);
+    setState(() {
+
+    });
+  }
+
+  adicionarProduto(int distribuidor, int pedido, Produto produto, int qtd, ) async {
+
+    //if(Constantes.pedidoAberto == null){
+      //iniciarPedido(distribuidor);
+    //}
+
+    double valor = produto.valor * qtd;
+
+    var res = await http.post(
+        Uri.parse("${Urls.urlBase}adicionarProduto.php"),
+        body: {
+          "pedido": pedido.toString(),
+          "produto": produto.id.toString(),
+          "qtd": qtd.toString(),
+          "valor" : valor.toString()
+        },
+        headers: {"Accept": "application/json"});
+
+    var obj = json.decode(res.body);
+    
+    print("ADICIONANDO O PRODUTO");
+    print(obj);
+
+    setState(() {
+
+    });
+  }
+
+
 
   buscarProdutos() async {
     List<Produto> tempListaProdutos = new List();
@@ -56,12 +104,20 @@ class _DistribuidorPageState extends State<DistribuidorPage> {
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: (){
+                          Navigator.of(context).pop();
+                        },
+                      ),
+
                       Hero(
                         tag: 'distribuidor${widget.distribuidor.id}',
                         child: Container(
-                          width: 100.0,
-                          height: 100.0,
+                          width: 90.0,
+                          height: 90.0,
                           decoration: BoxDecoration(
                               color: Colors.orange,
                               shape: BoxShape.circle,
@@ -76,26 +132,30 @@ class _DistribuidorPageState extends State<DistribuidorPage> {
                       SizedBox(
                         width: 15.0,
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            '${widget.distribuidor.nome}',
-                            style: TextStyle(
-                                color: Cores.noiteAzul,
-                                fontSize: 18.0,
-                                fontFamily: 'AvenirBold'),
-                          ),
-                          SmoothStarRating(
-                              allowHalfRating: true,
-                              starCount: 5,
-                              rating: rating,
-                              size: 20.0,
-                              color: Colors.yellow,
-                              borderColor: Colors.yellow,
-                              spacing: 0.0),
-                        ],
+                      Padding(
+                        padding: EdgeInsets.only(top: 15.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              '${widget.distribuidor.nome}',
+                              style: TextStyle(
+                                  color: Cores.noiteAzul,
+                                  fontSize: 18.0,
+                                  fontFamily: 'AvenirBold'),
+                            ),
+                            SmoothStarRating(
+                                allowHalfRating: true,
+                                starCount: 5,
+                                rating: rating,
+                                size: 20.0,
+                                color: Colors.yellow,
+                                borderColor: Colors.yellow,
+                                spacing: 0.0),
+                          ],
+                        ),
                       ),
+                      
                     ],
                   ),
                 ),
@@ -119,7 +179,7 @@ class _DistribuidorPageState extends State<DistribuidorPage> {
                               child: 
                                   Container(
                                 height: 100.0,
-                                width: 250.0,
+                                width: 200.0,
                                 decoration: BoxDecoration(
                                     
                                     color: Cores.noiteAzul,
@@ -133,7 +193,7 @@ class _DistribuidorPageState extends State<DistribuidorPage> {
                                       children: <Widget>[
                                         GestureDetector(
                                           onTap: (){
-                                            print('adicionar');
+                                            this.adicionarProduto(widget.distribuidor.id, 1, produto, 1);
                                           },
                                           child: Container(
                                             height: 45.0,
@@ -170,15 +230,15 @@ class _DistribuidorPageState extends State<DistribuidorPage> {
                                             '${produto.volume} litros',
                                             style: TextStyle(
                                                 color: Cores.noiteAzul,
-                                                fontSize: 17.0,
-                                                fontFamily: 'AvenirBold'),
+                                                fontSize: 21.0,
+                                                fontFamily: 'AvenirRegular'),
                                           ),
                                           Text(
                                             '\$${produto.valor}',
                                             style: TextStyle(
                                                 color: Cores.noiteAzul,
-                                                fontSize: 17.0,
-                                                fontFamily: 'AvenirBold'),
+                                                fontSize: 21.0,
+                                                fontFamily: 'AvenirRegular'),
                                           ),
                                         ],
                                       ),

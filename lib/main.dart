@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Glupe',
       theme: EqThemes.defaultLightTheme,
-      home: Cadastro(),
+      home: Splash(),
     );
   }
 }

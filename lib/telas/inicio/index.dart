@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glupe/classes/distribuidor.dart';
+import 'package:glupe/classes/usuario.dart';
 import 'package:glupe/cores/index.dart';
 import 'package:glupe/widgets/cardDistribuidora.dart';
 import 'package:glupe/widgets/cardDistribuidoraUsada.dart';
@@ -34,7 +35,7 @@ class _InicioState extends State<Inicio> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  ImagemUsuario("linkedin.jpeg"),
+                  ImagemUsuario(Usuario.superUsuario.imagem),
                   CircularPercentIndicator(
                     radius: 60.0,
                     lineWidth: 5.0,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glupe/classes/distribuidor.dart';
+import 'package:glupe/classes/usuario.dart';
 import 'package:glupe/constantes/index.dart';
 import 'package:glupe/cores/index.dart';
 import 'package:glupe/navegacao/index.dart';
@@ -20,8 +21,26 @@ class _SplashState extends State<Splash> {
 
     if(prefs.getInt("id") == null || prefs.getInt("id") == 0){
       Navegacao.navegarParaLogin(context);
-      
     }else{
+      //Navegacao.navegarParaLogin(context);
+      
+      int id = prefs.getInt("id");
+      String nome = prefs.getString("nome");
+      String imagem = prefs.getString("imagem");
+      String email = prefs.getString("email");
+      String celular = prefs.getString("celular");
+
+      Usuario usuario = new Usuario(
+        id: id,
+        nome: nome,
+        imagem: imagem,
+        email: email,
+        celular: celular
+      );
+
+      Usuario.superUsuario = usuario;
+      
+      
       this.buscarDistribuidores();
     }
   }

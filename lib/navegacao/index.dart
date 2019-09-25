@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glupe/telas/cadastro/index.dart';
 import 'package:glupe/telas/inicio/index.dart';
 import 'package:glupe/telas/login/index.dart';
 import 'package:glupe/telas/perfil/index.dart';
@@ -27,5 +28,13 @@ class Navegacao{
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     Login()));
+  }
+
+  static navegarParaCadstro(BuildContext context){
+    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    Cadastro()));
   }
 }
