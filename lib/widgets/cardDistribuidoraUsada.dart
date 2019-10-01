@@ -45,17 +45,18 @@ class CardDistribuidoraUsada extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Cores.noiteAzul,
+                                        color: Colors.grey[600],
                                         blurRadius:
                                             10.0, // has the effect of softening the shadow
                                         //spreadRadius: 5.0, // has the effect of extending the shadow
                                         offset: Offset(
-                                          0.0, // horizontal, move right 10
-                                          10.0, // vertical, move down 10
+                                          5.0, // horizontal, move right 10
+                                          5.0, // vertical, move down 10
                                         ),
-                                      )
+                                      ),
+                                      
                                     ],
-                                    color: Cores.noiteAzul,
+                                    color: Cores.branco,
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: Column(
                                   mainAxisAlignment:
@@ -67,7 +68,7 @@ class CardDistribuidoraUsada extends StatelessWidget {
                                     Text(
                                       '${distribuidor.nome}',
                                       style: TextStyle(
-                                          color: Cores.cristaBranca,
+                                          color: Cores.noiteAzul,
                                           fontSize: 17.0,
                                           fontFamily: 'AvenirBold'),
                                     ),
@@ -76,6 +77,7 @@ class CardDistribuidoraUsada extends StatelessWidget {
                                         Container(
                                           width: 180.0,
                                           child: LinearPercentIndicator(
+                                            lineHeight: 7.0,
                                             percent: percent,
                                             progressColor:
                                                 Cores.ceuAzulProfundo,
@@ -86,7 +88,7 @@ class CardDistribuidoraUsada extends StatelessWidget {
                                           child: Text(
                                             'GRÁTIS',
                                             style: TextStyle(
-                                                color: Cores.cristaBranca,
+                                                color: Cores.noiteAzul,
                                                 fontSize: 12.0,
                                                 fontFamily: 'AvenirBold'),
                                           ),
@@ -111,7 +113,7 @@ class CardDistribuidoraUsada extends StatelessWidget {
                                         Text(
                                           '1,2 km',
                                           style: TextStyle(
-                                              color: Cores.cristaBranca,
+                                              color: Cores.noiteAzul,
                                               fontFamily: 'AvenirRegular'),
                                         ),
                                       ],
@@ -131,7 +133,7 @@ class CardDistribuidoraUsada extends StatelessWidget {
                                           color: Colors.orange,
                                           shape: BoxShape.circle,
                                           border: Border.all(
-                                              color: Cores.cristaBranca,
+                                              color: Cores.ceuAzulProfundo,
                                               width: 3.0),
                                           image: DecorationImage(
                                               image: NetworkImage(

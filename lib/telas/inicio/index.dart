@@ -1,3 +1,4 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:glupe/classes/distribuidor.dart';
 import 'package:glupe/classes/usuario.dart';
@@ -36,12 +37,34 @@ class _InicioState extends State<Inicio> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   ImagemUsuario(Usuario.superUsuario.imagem),
+                  /*
                   CircularPercentIndicator(
                     radius: 60.0,
                     lineWidth: 5.0,
                     percent: 0.5,
                     center: new Text("50%"),
                     progressColor: Colors.green,
+                  )
+                  */
+
+                  AvatarGlow(
+                    startDelay: Duration(milliseconds: 1000),
+                    glowColor: Colors.blue,
+                    endRadius: 40.0,
+                    duration: Duration(milliseconds: 2000),
+                    repeat: true,
+                    showTwoGlows: true,
+                    repeatPauseDuration: Duration(milliseconds: 100),
+                    child: Material(
+                      elevation: 8.0,
+                      shape: CircleBorder(),
+                      child: CircleAvatar(
+                        backgroundColor:Colors.grey[100] ,
+                        child: Icon(Icons.shopping_cart),
+                        radius: 30.0,
+                        //shape: BoxShape.circle
+                      ),
+                    ),
                   )
                 ],
               ),

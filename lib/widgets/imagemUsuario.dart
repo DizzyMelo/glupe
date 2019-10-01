@@ -20,8 +20,8 @@ class ImagemUsuario extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5.0),
                         boxShadow: [
                           new BoxShadow(
-                            color: Cores.noiteAzul,
-                            offset: new Offset(0.0, 10.0),
+                            color: Cores.ceuAzulProfundo,
+                            offset: new Offset(0.0, 5.0),
                             blurRadius: 10.0,
                           )
                         ],

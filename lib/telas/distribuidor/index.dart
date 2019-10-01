@@ -9,6 +9,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:rounded_modal/rounded_modal.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 
 
 class DistribuidorPage extends StatefulWidget {
@@ -65,6 +67,26 @@ class _DistribuidorPageState extends State<DistribuidorPage> {
     setState(() {
 
     });
+  }
+
+  _buildCard({Config config, Color backgroundColor = Colors.transparent}) {
+    return Container(
+      height: 300.0,
+      width: 250.0,
+      child: Card(
+        elevation: 12.0,
+        margin: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16.0))),
+        child: WaveWidget(
+          config: config,
+          backgroundColor: backgroundColor,
+          size: Size(double.infinity, double.infinity),
+          waveAmplitude: 0,
+        ),
+      ),
+    );
   }
 
 
@@ -175,9 +197,22 @@ class _DistribuidorPageState extends State<DistribuidorPage> {
                               
                             },
                             child: Padding(
-                              padding: EdgeInsets.only(right: 20.0, top: 45.0),
-                              child: 
-                                  Container(
+                              padding: EdgeInsets.only(top: 45.0),
+                              child: _buildCard(
+                                        config: CustomConfig(
+                                          colors: [
+                                            Colors.blue[400],
+                                            Colors.blue[300],
+                                            Colors.blue[200],
+                                            Colors.blue[100]
+                                          ],
+                                          durations: [35000, 19440, 10800, 6000],
+                                          heightPercentages: [0.20, 0.23, 0.25, 0.30],
+                                          //blur: _blur,
+                                        ),
+                                      ),
+                              /*
+                              Container(
                                 height: 100.0,
                                 width: 200.0,
                                 decoration: BoxDecoration(
@@ -246,11 +281,14 @@ class _DistribuidorPageState extends State<DistribuidorPage> {
                                   ],
                                 ),
                               ),
+                              */
                             ),
                           );
                         },
                       ),
                     )),
+
+                    
               ],
             ),
           ),

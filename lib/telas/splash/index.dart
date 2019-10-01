@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glupe/classes/distribuidor.dart';
+import 'package:glupe/classes/pedido.dart';
 import 'package:glupe/classes/usuario.dart';
 import 'package:glupe/constantes/index.dart';
 import 'package:glupe/cores/index.dart';
@@ -40,7 +41,7 @@ class _SplashState extends State<Splash> {
 
       Usuario.superUsuario = usuario;
       
-      
+      this.verificarPedidoAberto();
       this.buscarDistribuidores();
     }
   }
@@ -53,7 +54,7 @@ class _SplashState extends State<Splash> {
 
     var res = await http.get(
         //Uri.parse("${Urls.urlBase}distribuidores.php?usuario=${Usuario.superUsuario.id}"),
-        Uri.parse("${Urls.urlBase}distribuidores.php?usuario=1"),
+        Uri.parse("${Urls.urlBase}distribuidores.php?usuario=${Usuario.superUsuario.id}"),
         headers: {"Accept": "application/json"});
 
     var objetos = json.decode(res.body);
@@ -83,6 +84,23 @@ class _SplashState extends State<Splash> {
       Constantes.listaDistribuidores = tempListaDistribuidores;
       Constantes.listaDistribuidoresUsados = tempListaDistribuidoresUsados;
       Navegacao.navegarParaInicio(context);
+    });
+  }
+
+  verificarPedidoAberto() async {
+
+    var res = await http.get(
+        Uri.parse("${Urls.urlBase}verificarPedidoAberto.php?usuario=${Usuario.superUsuario.id}"),
+        headers: {"Accept": "application/json"});
+
+    var obj = json.decode(res.body);
+    print(obj);
+
+
+    setState(() {
+      if(obj != false){
+        Constantes.pedidoAberto = new Pedido(int.parse(obj['id']), double.parse(obj['valor']));
+      }
     });
   }
 
